@@ -135,6 +135,10 @@ body {
 	position: absolute;
 }
 
+.button.on {
+	background-image: url('img/button-on.png');
+}
+
 #mcp_n1 {
 	left: 96px;
 	top: 158px;
