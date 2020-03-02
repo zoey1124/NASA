@@ -96,6 +96,9 @@
 
 		<br> 
 		<p id="sub" style='border: 4px solid black; width: 50px; margin: auto;'>Update</p>
+
+		<br>
+		<p id="test" style='border: 4px solid black; width: 50px; margin: auto;'>Test</p>
 	</form>
 </body>
 </html>
@@ -134,7 +137,48 @@
 		sim.memory.mcp_at_arm = $("#input_mcp_at_arm").is(":checked");
 		sim.memory.mcp_spd_intv = $("#input_mcp_spd_intv").is(":checked");
 		sim.memory.mcp_alt_intv = $("#input_mcp_alt_intv").is(":checked");
-		console.log(sim.memory.mcp_alt_intv);
 		sim.panel.render();
 	});
+	var runner;
+	var running = false;
+	$("#test").click(function() {
+		if (running == false) {
+			runner = setInterval(testAnimation, 100);
+			running = true;
+		} else {
+			runner = clearInterval(runner);
+			running = false;
+		}
+	})
+
+	var testAnimation = function() {
+		sim.memory.mcp_ias_mach_ds += 1;
+		sim.memory.mcp_hdg_ds += 2;
+		sim.memory.mcp_alt_ds += 4;
+		sim.memory.mcp_vert_spd_ds += 3;
+		
+		sim.memory.mcp_n1 = Math.random() >= 0.97;
+		sim.memory.mcp_spd = Math.random() >= 0.97;
+		sim.memory.mcp_lvl_spd = Math.random() >= 0.97;
+		sim.memory.mcp_vnav = Math.random() >= 0.97;
+		sim.memory.mcp_lnav = Math.random() >= 0.97;
+		sim.memory.mcp_vor_loc = true;
+		sim.memory.mcp_apprh = false;
+		sim.memory.mcp_hdg_sel = true;
+		sim.memory.mcp_alt_hld = true;
+		sim.memory.mcp_vert_spd = Math.random() >= 0.01;
+		
+		sim.memory.mcp_cmd_a = Math.random() >= 0.9;
+		sim.memory.mcp_cmd_b = Math.random() >= 0.9;
+		sim.memory.mcp_cws_a = Math.random() >= 0.9;
+		sim.memory.mcp_cws_b = Math.random() >= 0.9;
+		
+		sim.memory.mcp_fd_1 = Math.random() >= 0.01;
+		sim.memory.mcp_fd_2 = Math.random() >= 0.01;
+		sim.memory.mcp_at_arm = true;
+		sim.memory.mcp_spd_intv = true;
+		sim.memory.mcp_alt_intv = false;
+		sim.panel.render();
+	}
+
 </script>
