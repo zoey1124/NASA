@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            height: 400px;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="nd"></canvas>
+    <script type="text/javascript">
+        var canvas = document.getElementById('nd');
+        var nd = canvas.getContext('2d');
+        nd.fillRect(15, 5, 30, 10);
+
+        nd.fillRect(46, 5, 30, 10);
+
+        nd.fillStyle = 'rgb(0, 0, 200, 0.5)';
+        nd.fillRect(140, 5, 20, 6);
+        
+
+        nd.beginPath();
+        nd.moveTo(150, 20);
+        nd.lineTo(150, 120);
+        nd.stroke();
+
+        nd.beginPath();
+        nd.moveTo(150, 120);
+        nd.lineTo(165, 136);
+        nd.lineTo(135, 136);
+        nd.fill();
+
+        nd.beginPath();
+        nd.moveTo(280, 110);
+        nd.lineTo(280, 136);
+        nd.stroke();
+
+        //nd.beginPath();
+        //nd.moveTo();
+        //nd.lineTo();
+        //nd.stroke();
+
+    </script>
+</body>
+</html>
