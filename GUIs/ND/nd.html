@@ -6,9 +6,11 @@
     <title>Document</title>
     <style>
         canvas {
+            background-color: rgba(34, 72, 175, 0.92);
             border: 1px solid black;
+            border-radius: 10px;
             height: 400px;
-            width: 400px;
+            width: 500px;
         }
     </style>
 </head>
@@ -17,13 +19,26 @@
     <script type="text/javascript">
         var canvas = document.getElementById('nd');
         var nd = canvas.getContext('2d');
-        nd.fillRect(15, 5, 30, 10);
+        nd.fillStyle = 'rgb(210, 255, 255)';
+        nd.fillRect(15, 10, 30, 10);
+        nd.font = '7px Arial';
+        nd.fillText("GS", 15, 8);
 
-        nd.fillRect(46, 5, 30, 10);
+        nd.fillRect(46, 10, 30, 10);
+        nd.fillText("TAS", 50, 8);
 
-        nd.fillStyle = 'rgb(0, 0, 200, 0.5)';
+        /* magnetic tracking angle */
         nd.fillRect(140, 5, 20, 6);
         
+        nd.beginPath();
+        nd.moveTo(150, 120);
+        nd.lineTo(165, 136);
+        nd.lineTo(135, 136);
+        nd.fill();
+
+        /* ND Mode */
+        nd.fillStyle = 'rgb(51, 255, 51)';
+        nd.fillText("VOS 1", 20, 127);
 
         nd.beginPath();
         nd.moveTo(150, 20);
@@ -31,20 +46,37 @@
         nd.stroke();
 
         nd.beginPath();
-        nd.moveTo(150, 120);
-        nd.lineTo(165, 136);
-        nd.lineTo(135, 136);
-        nd.fill();
+        nd.arc(150, 120, 100, - 0.8 * Math.PI, - 0.2 * Math.PI);
+        nd.stroke();
 
         nd.beginPath();
         nd.moveTo(280, 110);
         nd.lineTo(280, 136);
         nd.stroke();
 
-        //nd.beginPath();
-        //nd.moveTo();
-        //nd.lineTo();
-        //nd.stroke();
+        nd.beginPath();
+        nd.moveTo(273, 111);
+        nd.lineTo(280, 111);
+        nd.stroke();
+
+        nd.beginPath();
+        nd.moveTo(273, 123);
+        nd.lineTo(280, 123);
+        nd.stroke();
+
+        nd.beginPath();
+        nd.moveTo(273, 135);
+        nd.lineTo(280, 135);
+        nd.stroke();
+
+        /** latitude and longtitude **/
+        nd.fillStyle = "rgb(250, 250, 250)";
+        nd.font = "8px Arial";
+        nd.fillText("LAT", 180, 126);
+        nd.fillText("LONG", 180, 136);
+
+        nd.fillText("TRK", 117, 12);
+        nd.fillText("MAG", 166, 12);
 
     </script>
 </body>
