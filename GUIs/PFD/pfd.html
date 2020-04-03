@@ -16,6 +16,7 @@
 <script src="js/altimeter_indicator.js"></script>
 <script src="js/attitude_indicator.js"></script>
 <script src="js/heading_indicator.js"></script>
+<script src="js/ils_probe.js"></script>
 
 <script type="text/javascript">	
 	var cvs = document.getElementById("alpha");
@@ -40,8 +41,8 @@
 		//Attitude Indicator
 		guages[0] = new AttitudeIndicator(ctx,
 		{
-			"x": 103,
-			"y": 115,
+			"x": 90,
+			"y": 100,
 			"width": 260,
 			"height": 280,
 		},
@@ -49,7 +50,7 @@
 		//Airspeed Digits Tape
 		guages[1] = new AirspeedTape(ctx,
 		{
-			"x": 20,
+			"x": 12,
 			"y": 70,
 			"width": 65,
 			"height": 390
@@ -58,7 +59,7 @@
 		//Airspeed Ticker
 		guages[2] = new AirspeedTicker(ctx,
 		{
-			"x": 65,
+			"x": 60,
 			"y": 250,
 			"width": 40,
 			"height": 30
@@ -103,10 +104,28 @@
 		//Heading Compass
 		guages[7] = new HeadingDial(ctx,
 		{
-			"x": 230,
+			"x": 220,
 			"y": 500,
 			"width": 80,
 			"height": 120
+		},
+		data);
+		//ILS GS/Loc Dev Probes
+		guages[8] = new gsProbe(ctx,
+		{
+			"x": 355,
+			"y": 240,
+			"width": 12,
+			"height": 10
+		},
+		data);
+
+		guages[9] = new locProbe(ctx,
+		{
+			"x": 220,
+			"y": 392,
+			"width": 12,
+			"height": 10
 		},
 		data);
 	}
@@ -127,22 +146,23 @@
 
 	data.fo_cmd_pit_dev = 0;
 	data.fo_cmd_roll_dev = 0;
-	//data.ils_2_gs_dev: 0,
-	//data.ils_2_loc_dev: 0,
+	data.ils_2_gs_dev = 0;
+	data.ils_2_loc_dev = 0;
 	data.mcp_ias_mach_ds = 300;
 	data.mcp_alt_ds = 27000;
 	data.mcp_vert_spd_ds = 500;
 	data.fo_ef_baro_cur = 1022;
 	data.cal_as = 450;
-	data.rate_of_clb = -2000;
+	data.rate_of_clb = 3000;
 	data.pres_alt = 1100;
 	data.radio_alt = 2400;
 	data.pitch_angle = 0;
 	data.roll_angle = 0;
-	data.hdg_angle = 180;
+	data.hdg_angle = 97;
 	//END DATA ENTRY
 
 	for(i = 0; i < guages.length; i++) {
+		guages[i].update(data);
 		guages[i].draw();
 	}
 </script>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="OLD_framebuild_style.css">
+</head>
+<body>
+	<div class="otwDiv">OTW</div>
+	<div class="noDataDiv">No Data</div>
+	<div class="offAOI">Off AoI</div>
+
+	<div class="mcpDiv">
+		<div class='guage' id='mcp_ias_mach_ds'>1000</div>
+		<div class='guage' id='mcp_hdg_ds'>000</div>
+		<div class='guage' id='mcp_alt_ds'>1000</div>
+		<div class='guage' id='mcp_vert_spd_ds'>1000</div>
+
+		<div class='switch' id='mcp_at_arm'></div>
+		<div class='switch' id='mcp_spd_intv'></div>
+		<div class='switch' id='mcp_alt_intv'></div>
+
+		<div class='switch small' id='mcp_fd_1'></div>
+		<div class='switch small' id='mcp_fd_2'></div>
+
+		<div class='knob' id='ias_mach_knob'></div>
+    	<div class='knob' id='heading_knob'></div>
+    	<div class='knob' id='altitude_knob'></div>
+
+    	<a href='#' class='button' id='mcp_n1'></a>
+	    <a href='#' class='button' id='mcp_spd'></a>
+	    <a href='#' class='button' id='mcp_lvl_spd'></a>
+	    <a href='#' class='button' id='mcp_vnav'></a>
+	    <a href='#' class='button' id='mcp_lnav'></a>
+	    <a href='#' class='button' id='mcp_vor_loc'></a>
+	    <a href='#' class='button' id='mcp_apprh'></a>
+	    <a href='#' class='button' id='mcp_hdg_sel'></a>
+	    <a href='#' class='button' id='mcp_alt_hld'></a>
+	    <a href='#' class='button' id='mcp_vert_spd'></a>
+
+	    <a href='#' class='button' id='mcp_cmd_a'></a>
+    	<a href='#' class='button' id='mcp_cmd_b'></a>
+	    <a href='#' class='button' id='mcp_cws_a'></a>
+	    <a href='#' class='button' id='mcp_cws_b'></a>
+
+		<a class='wheel' id='vs_wheel'></a>
+
+		<a href='#' class='on' id='diseng_switch'></a>
+	</div>
+	<div class="efisDiv">EFIS</div>
+
+	<div class="upperEICASDiv">Upper EICAS</div>
+	<div class="lowerEICASDiv">Lower EICAS</div>
+
+	<div class="fmsDiv">FMS</div>
+
+	<div class="ndDiv">
+		<canvas id="ndCanvas" width="250" height="239"></canvas>
+		<img src="img/vsd.png" id="vsd_img">
+	</div>
+	<div class="pfdDiv">
+		<canvas id="pfdCanvas" width="250" height="239"></canvas>
+	</div>
+</body>
+</html>
+
+<script src="js/jquery-1.11.3.min.js"></script>
+
+
+<script src="js/mcp_panel.js"></script>
+<script src="js/mcp_components.js"></script>
+<script src="js/mcp_sim.js"></script>
+
+<script src="js/nd_sim.js"></script>
+<script type="text/javascript">
+	var ndCvs = document.getElementById("ndCanvas");
+	var ndCtx = ndCvs.getContext("2d");
+
+	var GUAGE_BACKGROUND = "#191921";
+	var WIDTH = ndCvs.width;
+	var HEIGHT = ndCvs.height;
+
+	ndCtx.fillStyle = "black";
+	ndCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+	var ndSim = new NDSim();
+	ndSim.draw(ndCtx, WIDTH, HEIGHT);
+</script>
+
+
+<script src="js/elements.js"></script>
+<script src="js/pfd_sim.js"></script>
+<script src="js/mod_bar.js"></script>
+<script src="js/airspeed_indicator.js"></script>
+<script src="js/altimeter_indicator.js"></script>
+<script src="js/attitude_indicator.js"></script>
+<script src="js/heading_indicator.js"></script>
+<script src="js/ils_probe.js"></script>
+<script type="text/javascript">
+	var pfdCvs = document.getElementById("pfdCanvas");
+	var pfdCtx = pfdCvs.getContext("2d");
+
+	var GUAGE_BACKGROUND = "#191921";
+	var GUAGE_FOREGROUND = 'white';
+	var GROUND = "#752E00";
+  	var SKY = "#0072B9";
+  	var EARTH = "#0B6739"; 
+  	var BUG = "#F844F8";
+	var WIDTH = pfdCvs.width;
+	var HEIGHT = pfdCvs.height;
+
+	pfdCtx.fillStyle = "black";
+	pfdCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+	var data = new PFDSim();
+
+	var guages = [];
+	function initGuages() {
+		//Attitude Indicator
+		/*guages[0] = new AttitudeIndicator(pfdCtx,
+		{
+			"x": 90,
+			"y": 100,
+			"width": 260,
+			"height": 280,
+		},
+		data);*/
+		//Airspeed Digits Tape
+		guages[1] = new AirspeedTape(pfdCtx,
+		{
+			"x": 6,
+			"y": 20,
+			"width": 32,
+			"height": 200
+		},
+		data);
+		//Airspeed Ticker
+		guages[2] = new AirspeedTicker(pfdCtx,
+		{
+			"x": 30,
+			"y": 115,
+			"width": 24,
+			"height": 15
+		},
+		data);
+		//Altimter Digits Tap
+		guages[3] = new AltimeterTape(pfdCtx,
+		{
+			"x": 190,
+			"y": 20,
+			"width": 32,
+			"height": 200
+		},
+		data);
+		//Rate Of Climb Tape
+		guages[4] = new ClimbTape(pfdCtx,
+		{
+			"x": 226,
+			"y": 20,
+			"width": 20,
+			"height": 200
+		},
+		data);
+		//Altimeter Ticker
+		guages[5] = new AltimeterTicker(pfdCtx,
+		{
+			"x": 191,
+			"y": 113,
+			"width": 33,
+			"height": 15
+		},
+		data);
+		//Top Mode Bar
+		guages[6] = new ModeBar(pfdCtx,
+		{
+			"x": 125,
+			"y": 15,
+			"width": 250,
+			"height": 40
+		},
+		data);
+		//Heading Compass
+		guages[7] = new HeadingDial(pfdCtx,
+		{
+			"x": 220,
+			"y": 500,
+			"width": 80,
+			"height": 120
+		},
+		data);
+		//ILS GS/Loc Dev Probes
+		guages[8] = new gsProbe(pfdCtx,
+		{
+			"x": 355,
+			"y": 240,
+			"width": 12,
+			"height": 10
+		},
+		data);
+
+		guages[9] = new locProbe(pfdCtx,
+		{
+			"x": 220,
+			"y": 392,
+			"width": 12,
+			"height": 10
+		},
+		data);
+	}
+
+	initGuages();
+
+	//ENTER DATA INTO SIM
+	data.at_eng_mode = "MCP SPD";
+	data.fo_roll_eng = "VOR/LOC";
+	data.fo_roll_arm = "LNAV";
+	data.fo_pit_eng = "G/S";
+	data.fo_pit_arm = "FLARE";
+
+	data.fo_cws_pit = true;
+	data.fo_cws_roll = true;
+
+	data.fo_ap_stat = "CMD";
+
+	data.fo_cmd_pit_dev = 0;
+	data.fo_cmd_roll_dev = 0;
+	data.ils_2_gs_dev = 0;
+	data.ils_2_loc_dev = 0;
+	data.mcp_ias_mach_ds = 300;
+	data.mcp_alt_ds = 27000;
+	data.mcp_vert_spd_ds = 500;
+	data.fo_ef_baro_cur = 1022;
+	data.cal_as = 450;
+	data.rate_of_clb = 2710;
+	data.pres_alt = 1100;
+	data.radio_alt = 2400;
+	data.pitch_angle = 0;
+	data.roll_angle = 0;
+	data.hdg_angle = 97;
+	//END DATA ENTRY
+
+	for(i = 0; i < guages.length; i++) {
+		if (i == 1 || i == 2 || i == 3 || i == 4 || i == 5) {
+			guages[i].update(data);
+			guages[i].draw();
+		}
+	}
+</script>

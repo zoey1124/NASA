@@ -1,83 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        canvas {
-            background-color: rgba(34, 72, 175, 0.92);
-            border: 1px solid black;
-            border-radius: 10px;
-            height: 400px;
-            width: 500px;
-        }
-    </style>
+	<link rel="stylesheet" type="text/css" href="nd_style.css">
 </head>
 <body>
-    <canvas id="nd"></canvas>
-    <script type="text/javascript">
-        var canvas = document.getElementById('nd');
-        var nd = canvas.getContext('2d');
-        nd.fillStyle = 'rgb(210, 255, 255)';
-        nd.fillRect(15, 10, 30, 10);
-        nd.font = '7px Arial';
-        nd.fillText("GS", 15, 8);
-
-        nd.fillRect(46, 10, 30, 10);
-        nd.fillText("TAS", 50, 8);
-
-        /* magnetic tracking angle */
-        nd.fillRect(140, 5, 20, 6);
-        
-        nd.beginPath();
-        nd.moveTo(150, 120);
-        nd.lineTo(165, 136);
-        nd.lineTo(135, 136);
-        nd.fill();
-
-        /* ND Mode */
-        nd.fillStyle = 'rgb(51, 255, 51)';
-        nd.fillText("VOS 1", 20, 127);
-
-        nd.beginPath();
-        nd.moveTo(150, 20);
-        nd.lineTo(150, 120);
-        nd.stroke();
-
-        nd.beginPath();
-        nd.arc(150, 120, 100, - 0.8 * Math.PI, - 0.2 * Math.PI);
-        nd.stroke();
-
-        nd.beginPath();
-        nd.moveTo(280, 110);
-        nd.lineTo(280, 136);
-        nd.stroke();
-
-        nd.beginPath();
-        nd.moveTo(273, 111);
-        nd.lineTo(280, 111);
-        nd.stroke();
-
-        nd.beginPath();
-        nd.moveTo(273, 123);
-        nd.lineTo(280, 123);
-        nd.stroke();
-
-        nd.beginPath();
-        nd.moveTo(273, 135);
-        nd.lineTo(280, 135);
-        nd.stroke();
-
-        /** latitude and longtitude **/
-        nd.fillStyle = "rgb(250, 250, 250)";
-        nd.font = "8px Arial";
-        nd.fillText("LAT", 180, 126);
-        nd.fillText("LONG", 180, 136);
-
-        nd.fillText("TRK", 117, 12);
-        nd.fillText("MAG", 166, 12);
-
-    </script>
+	<canvas id="alpha" width="500" height="500"></canvas>
+	<img src="img/vsd.png" id="vsd_img">
 </body>
 </html>
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/nd_sim.js"></script>
+
+<script type="text/javascript">
+	var cvs = document.getElementById("alpha");
+	var ctx = cvs.getContext("2d");
+
+	var GUAGE_BACKGROUND = "#191921";
+	var WIDTH = cvs.width;
+	var HEIGHT = cvs.height;
+
+	ctx.fillStyle = "black";
+	ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+	var sim = new NDSim();
+
+	sim.memory.gnd_spd = 200;
+	sim.memory.true_as = 141;
+	sim.memory.wind_dir_at_ac = 11.11;
+	sim.memory.wind_spd_at_ac = 7.9;
+	sim.memory.mag_track_angle = 107;
+	sim.memory.hdg_angle = 90;
+	sim.memory.mag_hdg_angle = 106.8;
+	sim.memory.lat = 39;
+	sim.memory.long = -78;
+	sim.memory.fo_ef_nd_mode = 1;
+	sim.memory.fo_ef_rnge = 81;
+	sim.memory.fo_bel_gs_lt = 1;
+	sim.memory.fo_vsd_on = 0;
+
+	sim.draw(ctx, WIDTH, HEIGHT);
+</script>

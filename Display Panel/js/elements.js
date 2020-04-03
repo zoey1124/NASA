@@ -4,6 +4,7 @@ function drawTickerDigit(list, value, scrollThreshold, digitSpacing, location, f
 	var y = location.y;
 	var wid = location.width;
 	var hei = location.height;
+	var ctx = pfdCtx;
 
 	ctx.save();
 	ctx.fillStyle = GUAGE_BACKGROUND;
@@ -56,6 +57,7 @@ function drawTape(location, fontSize, leftAlign, bigTicks, smallTicks, negative,
 	var y = location.y;
 	var wid = location.width;
 	var hei = location.height;
+	var ctx = pfdCtx;
 
 	var bugHeight = 50;
 	var bugWidth = 0.1;
@@ -89,10 +91,16 @@ function drawTape(location, fontSize, leftAlign, bigTicks, smallTicks, negative,
 		{
 			if (relValue % bigTicks == 0)
 			{
+				var addFactor = 2;
+				var shiftFactor = 3;
+				if (leftAlign) {
+					addFactor = -2;
+					shiftFactor = -3;
+				}
 				ctx.font = (fontSize * 1.5) + "px Arial"
-				ctx.fillRect(x, newY - 1.5 * fontSize / 2 - 3, wid, 1)
-				ctx.fillRect(x, newY + 1.5 * fontSize / 2, wid, 1)
-				ctx.fillText(relValue, x + wid / 2, newY)
+				ctx.fillRect(x+addFactor, newY - 1.5 * fontSize / 2 - 3, wid, 1)
+				ctx.fillRect(x+addFactor, newY + 1.5 * fontSize / 2, wid, 1)
+				ctx.fillText(relValue, x + wid / 2 + shiftFactor, newY)
 				ctx.font = fontSize + "px Arial"
 			}
 			else if (relValue % smallTicks == 0)
@@ -100,13 +108,13 @@ function drawTape(location, fontSize, leftAlign, bigTicks, smallTicks, negative,
 				if (leftAlign)
 				{
 					var textWidth = ctx.measureText(relValue).width;
-					ctx.fillRect(x, newY, wid/2 - 15, 1)
-					ctx.fillText(relValue, x + wid - textWidth/2 - 5, newY)
+					ctx.fillRect(x - 5, newY, wid/2 - 10, 1)
+					ctx.fillText(relValue, x + wid - textWidth/2 - 3, newY)
 				}
 				else
 				{
 					var textWidth = ctx.measureText(relValue).width;
-					ctx.fillRect(x + wid/2 + 15, newY, wid/2 - 15, 1)
+					ctx.fillRect(x + wid/2 + 10, newY, wid/2 - 10, 1)
 					ctx.fillText(relValue, x + textWidth/2 + 5, newY)
 				}
 			}
