@@ -25,6 +25,24 @@ function enterData() {
 	mcpSim.memory.mcp_spd_intv = zero_or_one(raw_memory[i].mcp_spd_intv);
 	mcpSim.memory.mcp_alt_intv = zero_or_one(raw_memory[i].mcp_alt_intv);
 
+	//Misc Entry
+	miscSim.memory.throttle_1_pos = format_misc(raw_memory[i].throttle_1_pos);
+	miscSim.memory.throttle_2_pos = format_misc(raw_memory[i].throttle_2_pos);
+	miscSim.memory.flap_angle = format_misc(raw_memory[i].flap_angle);
+	miscSim.memory.spoiler_pos = format_misc(raw_memory[i].spoiler_pos);
+
+	miscSim.memory.mstr_caution = zero_or_one(raw_memory[i].mstr_caution);
+	miscSim.memory.capt_ap_discon = zero_or_one(raw_memory[i]["capt ap_discon"]);
+	miscSim.memory.fo_ap_discon = zero_or_one(raw_memory[i].fo_ap_discon);
+	miscSim.memory.ap_caut_lt = zero_or_one(raw_memory[i].ap_caut_lt);
+	miscSim.memory.ap_warn_lt = zero_or_one(raw_memory[i].ap_warn_lt);
+	miscSim.memory.ap_discon_horn = zero_or_one(raw_memory[i].ap_discon_horn);
+	miscSim.memory.alt_warn_horn = zero_or_one(raw_memory[i].alt_warn_horn);
+	miscSim.memory.at_1_discon = zero_or_one(raw_memory[i].at_1_discon);
+	miscSim.memory.at_2_discon = zero_or_one(raw_memory[i].at_2_discon);
+	miscSim.memory.at_caut_lt = zero_or_one(raw_memory[i].at_caut_lt);
+	miscSim.memory.at_warn_lt = zero_or_one(raw_memory[i].at_warn_lt);
+	miscSim.memory.FMC_alert_lt = zero_or_one(raw_memory[i].FMC_alert_lt);
 	// ND Entry
 	ndSim.memory.fo_ef_nd_mode = format_nd(raw_memory[i].fo_ef_nd_mode);
 	ndSim.memory.fo_ef_rnge = format_nd(raw_memory[i].fo_ef_rnge);
@@ -114,6 +132,14 @@ function enterData() {
 			return "";
 		} else {
 			return val;
+		}
+	}
+
+	function format_misc(val) {
+		if (val == "") {
+			return "";
+		} else {
+			return Math.round(val * 1000) / 1000;
 		}
 	}
 }

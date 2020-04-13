@@ -21,9 +21,12 @@ app.get('/initialize', function(req, res) {
 
 app.get('/simulation', function(req, res) {
 	fs.readFile('data/raw_formatted.txt', function(err, data) {
-		if (err) return console.log(err);
-		var list = data.toString();
-		res.render('framebuild.ejs', {list:list});
+		var simList = data.toString();
+		fs.readFile('data/eyetracking_formatted.txt', function(err, data) {
+			if (err) return console.log(err);
+			var eyeList = data.toString();
+			res.render('framebuild.ejs', {simList:simList, eyeList: eyeList});
+		})
 	});
 });
 
@@ -51,8 +54,31 @@ function csvHandler(req, res) {
 
 	    fs.writeFile('data/raw_formatted.txt', JSON.stringify(jsonObj), function(err) {
 	    	if (err) throw err;
+	    });
+	});
+
+	fs.readFile('data/eyetracking.csv', function(err, data){
+		if (err) {
+			return console.log(err);
+		}
+		var bufferString = data.toString();
+		var arr = bufferString.split('\n');
+		var jsonObj = [];
+	    var headers = arr[0].split(',');
+	    for(var i = 1; i < arr.length; i++) {
+	      var data = arr[i].split(',');
+	      var obj = {};
+	      for(var j = 0; j < data.length; j++) {
+	         obj[headers[j].trim()] = data[j].trim();
+	      }
+	      jsonObj.push(obj);
+	    }
+
+	    fs.writeFile('data/eyetracking_formatted.txt', JSON.stringify(jsonObj), function(err) {
+	    	if (err) throw err;
 	    	res.send("Parsing input data.");
 	    });
 	});
+
 	console.log("Input data successfully parsed.")
 }
