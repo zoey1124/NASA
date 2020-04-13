@@ -63,8 +63,14 @@ function AirspeedTicker(ctx, location, data) {
 	  	if (airspeed < 0)
 	  	{
 	  		airspeed = 0;
+	  	} else {
+	  		airspeed = Math.floor(airspeed);
 	  	}
-  		var ones = airspeed / 1;
+	  	ctx.fillStyle = 'white';
+	  	ctx.font = "20px Arial"
+	  	var textWidth = ctx.measureText(airspeed).width/2;
+	  	ctx.fillText(airspeed, x - textWidth - 25, y+hei-5);
+  		/*var ones = airspeed / 1;
   		var tens = (airspeed / 10); 
   		var hundreds = airspeed / 100;
 
@@ -92,6 +98,6 @@ function AirspeedTicker(ctx, location, data) {
   			ctx.font = "20px Arial";
   			var char = Math.floor(airspeed / 10) % 10;
   			ctx.fillText(char, 25, 271);
-  		}
+  		}*/
 	}
 }

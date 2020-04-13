@@ -1,6 +1,12 @@
 // ######## MCP INITIALIZATION ########
 var mcpSim = new MCPSim();
 
+// ######## Misc INITIALIZATION ########
+var miscCvs = document.getElementById("miscCanvas");
+var miscCtx = miscCvs.getContext("2d");
+
+var miscSim = new MiscSim();
+
 // ######## ND INITIALIZATION ########
 var ndCvs = document.getElementById("ndCanvas");
 var ndCtx = ndCvs.getContext("2d");
@@ -56,7 +62,7 @@ function initGuages() {
 	guages[2] = new AirspeedTicker(pfdCtx,
 	{
 		"x": 48,
-		"y": 181,
+		"y": 180,
 		"width": 35,
 		"height": 24
 	},
@@ -83,7 +89,7 @@ function initGuages() {
 	guages[5] = new AltimeterTicker(pfdCtx,
 	{
 		"x": 310,
-		"y": 181,
+		"y": 180,
 		"width": 45,
 		"height": 24
 	},

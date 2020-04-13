@@ -78,8 +78,14 @@ function AltimeterTicker(ctx, location, data) {
 	  	if (altitude < 0)
 	  	{
 	  		altitude = 0;
+	  	} else {
+	  		altitude = Math.floor(altitude);
 	  	}
-  		var tens = altitude / 10
+	  	ctx.fillStyle = 'white';
+	  	ctx.font = "17px Arial"
+	  	var textWidth = ctx.measureText(altitude).width;
+	  	ctx.fillText(altitude, x+wid+8-textWidth, y+hei-6);
+  		/*var tens = altitude / 10
   		var hundreds = (altitude / 100)
   		var thousands = (altitude / 1000)
   		var thenThousands = (altitude / 10000)
@@ -104,7 +110,7 @@ function AltimeterTicker(ctx, location, data) {
   		// Draw ten thousands digit place
   		loc.x = x + 6
   		onesList[0] = ""
-  		drawTickerDigit(onesList, thenThousands, 0.001, 20, loc, 18);
+  		drawTickerDigit(onesList, thenThousands, 0.001, 20, loc, 18);*/
 	}
 }
 

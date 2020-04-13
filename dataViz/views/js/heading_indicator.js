@@ -14,16 +14,16 @@ function HeadingDial(ctx, location, data) {
 
 		ctx.beginPath();
 		ctx.strokeStyle = 'white';
-		ctx.arc(x, y + 50, wid + 50, 0, Math.PI, true);
+		ctx.arc(x, y + 25, wid + 20, 0, Math.PI, true);
 		ctx.lineWidth = 3;
 		ctx.stroke();
 
 		ctx.beginPath();
-		ctx.moveTo(x,500);
+		ctx.moveTo(x,401);
 		ctx.strokeStyle = 'white';
 		theta = (this.data.hdg_angle) * (Math.PI/180);
 		var adjustmentFactor = 10*Math.abs(Math.cos(0.75*theta))
-		var r = wid + adjustmentFactor;
+		var r = wid + adjustmentFactor - 5;
 		var newX = x - (r*Math.cos(theta));
 		var newY = y - (r*Math.sin(theta));
 		ctx.lineTo(newX, newY);
@@ -43,7 +43,7 @@ function HeadingDial(ctx, location, data) {
 		ctx.font = "14px Arial";
 		ctx.fillStyle = "#5afc03";
 		var l = ctx.measureText(this.data.radio_alt)['width'];
-		ctx.fillText(2400, x - (l/2), y-wid-4);
+		ctx.fillText(this.data.radio_alt, x - (l/2), y-wid-1);
 
 	}
 }

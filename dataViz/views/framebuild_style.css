@@ -73,7 +73,15 @@ body {
 
 	position: absolute;
 	left: 190px;
-	top: -40px;
+	top: -38px;
+}
+
+#frame {
+	font-size: 14px;
+
+	position: absolute;
+	left: 190px;
+	top: 8px;
 }
 
 .slidecontainer {
@@ -114,6 +122,14 @@ body {
   cursor: pointer;
 }
 
+.miscDiv {
+	width: 160px;
+	height: 552px;
+
+	position: absolute;
+	left: 5px;
+	top: 5px;
+}
 .otwDiv {
 	width: 1060px;
 	height: 150px;

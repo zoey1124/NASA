@@ -61,10 +61,10 @@ function enterData() {
 	pfdSim.memory.cal_as = format_pfd_preserve(raw_memory[i].cal_as);
 	pfdSim.memory.rate_of_clb = format_pfd_preserve(raw_memory[i].rate_of_clb);
 	pfdSim.memory.pres_alt = format_pfd_preserve(raw_memory[i].pres_alt);
-	pfdSim.memory.radio_alt = format_pfd_preserve(raw_memory[i].radio_alt);
+	pfdSim.memory.radio_alt = format_pfd_round(raw_memory[i].radio_alt);
 	pfdSim.memory.pitch_angle = format_pfd_preserve(raw_memory[i].pitch_angle);
 	pfdSim.memory.roll_angle = format_pfd_preserve(raw_memory[i].roll_angle);
-	pfdSim.memory.hdg_angle = format_pfd_preserve(raw_memory[i].hdg_angle);
+	pfdSim.memory.hdg_angle = format_pfd_round(raw_memory[i].hdg_angle);
 
 	function zero_or_one(val) {
 		if (val == "") {
@@ -93,19 +93,19 @@ function enterData() {
 	}
 
 	function format_pfd_round(val) {
-		if (val == "" || isNaN(val)) {
-			return "";
+		if (val == "" || !(val)) {
+			return 0;
 		} else {
 			return Math.round(val);
 		}
 	}
 
 	function format_pfd_preserve(val) {
-		if (val == "" || isNaN(val)) {
+		if (val == "" || !val) {
 			return "";
 		} else {
-			var rounded = Math.round(val * 10) / 10
-			return Math.round(rounded);
+			var rounded = Math.round(val * 1000) / 1000
+			return rounded;
 		}
 	}
 
