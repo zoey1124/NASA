@@ -5,6 +5,14 @@ var ctxWid = 1256;
 var ctxHei = 809;
 
 trackerQueue = [];
+hold = 0;
+initRadius = 40;
+initOpacity = 1;
+initDecay = 0.60;
+initStyle = "stroke";
+initFixations = 10;
+cross = true;
+linearDecay = true;
 
 function drawTracking() {
 	var object_being_viewed = raw_memory[data_index]["\"PGaze_Object_ID\""];
@@ -18,102 +26,135 @@ function drawTracking() {
 
 	if (object_being_viewed === "0") {
 		console.log("Pilot Is Viewing: Off AOI");
+		eyeCtx.strokeStyle = "rgba(128,128,128," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(128,128,128," + initOpacity + ")";
 		$(".offAOIDiv").css("border", "6px solid #ff0000");
 	} else if (confidence < 0.85) {
 		console.log("Pilot Is Viewing: NoData");
+		eyeCtx.strokeStyle = "rgba(128,128,128," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(128,128,128," + initOpacity + ")";
 		$(".noDataDiv").css("border", "6px solid #ff0000");
 	} else if (object_being_viewed === "1003") {
 		console.log("Pilot Is Viewing: PFD");
+		eyeCtx.strokeStyle = "rgba(200,0,0," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(200,0,0," + initOpacity + ")";
 		origin = {id: "1003", x: 851, y: 715, wid: 400, hei: 400, pgazeX: x, pgazeY: y};
+		hold = data_index;
 		trackerQueue.push(origin);
 	} else if (object_being_viewed === "1004") {
 		console.log("Pilot Is Viewing: ND");
+		eyeCtx.strokeStyle = "rgba(200,0,0," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(200,0,0," + initOpacity + ")";
 		origin = {id: "1004", x: 445, y: 715, wid: 400, hei: 400, pgazeX: x, pgazeY: y};
+		hold = data_index;
 		trackerQueue.push(origin);
 	} else if (object_being_viewed === "1005") {
 		console.log("Pilot Is Viewing: OTW");
+		eyeCtx.strokeStyle = "rgba(200,0,0," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(200,0,0," + initOpacity + ")";
 		origin = {id: "1005", x: 2, y: 151, wid: 1060, hei: 150, pgazeX: x, pgazeY: y};
+		hold = data_index;
 		trackerQueue.push(origin);
 	} else if (object_being_viewed === ("1006")) {
 		console.log("Pilot Is Viewing: Upper EICAS");
+		eyeCtx.strokeStyle = "rgba(200,0,0," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(200,0,0," + initOpacity + ")";
 		origin = {id: "1006", x: 2, y: 556, wid: 250, hei: 243, pgazeX: x, pgazeY: y};
+		hold = data_index;
 		trackerQueue.push(origin);
 	} else if (object_being_viewed === ("1007")) {
 		console.log("Pilot Is Viewing: EFIS");
-		origin = {id: "1007", x: 970, y: 307, wid: 200, hei: 150, pgazeX: x, pgazeY: y};
+		eyeCtx.strokeStyle = "rgba(200,0,0," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(200,0,0," + initOpacity + ")";
+		origin = {id: "1007", x: 1013, y: 307, wid: 200, hei: 150, pgazeX: x, pgazeY: y};
+		hold = data_index;
 		trackerQueue.push(origin);
 	} else if (object_being_viewed === ("1008")) {
 		console.log("Pilot Is Viewing: FMS");
+		eyeCtx.strokeStyle = "rgba(200,0,0," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(200,0,0," + initOpacity + ")";
 		origin = {id: "1008", x: 260, y: 807, wid: 182, hei: 306, pgazeX: x, pgazeY: y};
+		hold = data_index;
 		trackerQueue.push(origin);
 	} else if (object_being_viewed === ("1009")) {
 		console.log("Pilot Is Viewing: MCP");
-		origin = {id: "1009", x: 2, y: 306, wid: 962, hei: 152, pgazeX: x, pgazeY: y};
+		eyeCtx.strokeStyle = "rgba(200,0,0," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(200,0,0," + initOpacity + ")";
+		origin = {id: "1009", x: 2, y: 306, wid: 1010, hei: 152, pgazeX: x, pgazeY: y};
+		hold = data_index;
 		trackerQueue.push(origin);
 	} else if (object_being_viewed === ("1010")) {
 		console.log("Pilot Is Viewing: Lower EICAS");
+		eyeCtx.strokeStyle = "rgba(200,0,0," + initOpacity + ")";
+		eyeCtx.fillStyle = "rgba(200,0,0," + initOpacity + ")";
 		origin = {id: "1010", x: 2, y: 807, wid: 250, hei: 243, pgazeX: x, pgazeY: y};
+		hold = data_index;
 		trackerQueue.push(origin);
 	}
-
 	drawTrackers();
 }
 
 function drawTrackers() {
-	opacity = 0.9;
-	radius = 40;
-	tempStorage = [];
-	while (trackerQueue.length > 0) {
-		mostRecent = trackerQueue.pop();
-		tempStorage.push(mostRecent);
-		eyeCtx.fillStyle = "rgba(200, 0, 0, " + opacity + ")";
+	opacity = initOpacity;
+	radius = initRadius;
+	if ((data_index - hold) >= (2700 / sim_speed)) {
+		trackerQueue = [];
+		return;
+	}
+	for (i = 0; i < (trackerQueue.length - 1); i++)  {
+		var firstX  = trackerQueue[i].x + (trackerQueue[i].wid * trackerQueue[i].pgazeX);
+		var firstY = trackerQueue[i].y - (trackerQueue[i].hei * trackerQueue[i].pgazeY);
 
-		var specX = mostRecent.x + (mostRecent.wid * mostRecent.pgazeX);
-		var specY = mostRecent.y - (mostRecent.hei * mostRecent.pgazeY);
+		var secondX  = trackerQueue[i+1].x + (trackerQueue[i+1].wid * trackerQueue[i+1].pgazeX);
+		var secondY = trackerQueue[i+1].y - (trackerQueue[i+1].hei * trackerQueue[i+1].pgazeY);
 
 		eyeCtx.beginPath();
-		eyeCtx.fillStyle = "rgba(200, 0, 0, " + opacity + ")";
-		eyeCtx.arc(specX, specY, radius, 0, 2*Math.PI);
-		eyeCtx.fill();
-
-		/*eyeCtx.beginPath();
-		eyeCtx.fillStyle = "rgba(0, 0, 0, " + opacity + ")";
-		eyeCtx.arc(specX, specY, 3, 0, 2*Math.PI);
-		eyeCtx.fill();*/
-
-		opacity = parseFloat(opacity) * 0.7;
-		radius = radius * 0.7;
-	}
-	while (tempStorage.length >= 10) {
-		tempStorage.pop();
-	}
-	if (tempStorage.length >= 2) {
-		fromLine = tempStorage[0];
-		toLine = tempStorage[1];
-		eyeCtx.strokeStyle = "rgb(200, 0, 0)";
 		eyeCtx.lineWidth = 4;
-		eyeCtx.beginPath();
-		eyeCtx.moveTo(fromLine.x + (fromLine.wid * fromLine.pgazeX), fromLine.y - (fromLine.wid * fromLine.pgazeY));
-		eyeCtx.lineTo(toLine.x + (toLine.wid * toLine.pgazeX), toLine.y - (toLine.wid * toLine.pgazeY));
+		eyeCtx.moveTo(firstX, firstY);
+		eyeCtx.lineTo(secondX, secondY);
 		eyeCtx.stroke();
-		eyeCtx.lineWidth = 1;
-		/*for (i = 0; i < (tempStorage.length - 1); i++) {
-			fromLine = tempStorage[i];
-			toLine = tempStorage[i+1];
-			eyeCtx.strokeStyle = "rgb(200, 0, 0)";
-			eyeCtx.lineWidth = 3;
-			eyeCtx.beginPath();
-			eyeCtx.moveTo(fromLine.x + (fromLine.wid * fromLine.pgazeX), fromLine.y - (fromLine.wid * fromLine.pgazeY));
-			eyeCtx.lineTo(toLine.x + (toLine.wid * toLine.pgazeX), toLine.y - (toLine.wid * toLine.pgazeY));
-			eyeCtx.stroke();
-			eyeCtx.lineWidth = 1;
-		}*/
 	}
+	trackerQueue.reverse();
+	for (i = 0; i < trackerQueue.length; i++) {
+		var specX  = trackerQueue[i].x + (trackerQueue[i].wid * trackerQueue[i].pgazeX);
+		var specY = trackerQueue[i].y - (trackerQueue[i].hei * trackerQueue[i].pgazeY);
 
-	trackerQueue = tempStorage.reverse();
+		eyeCtx.beginPath();
+		eyeCtx.lineWidth = 5;
+		eyeCtx.arc(specX, specY, radius, 0, 2*Math.PI);
+		if (initStyle == "stroke") {
+			eyeCtx.stroke();
+		} else if (initStyle == "fill") {
+			eyeCtx.fill();
+		}
+
+		if (cross) {
+			eyeCtx.beginPath();
+			eyeCtx.moveTo(specX - 8, specY);
+			eyeCtx.lineTo(specX + 8, specY);
+			eyeCtx.stroke();
+			eyeCtx.beginPath();
+			eyeCtx.moveTo(specX, specY - 8);
+			eyeCtx.lineTo(specX, specY + 8);
+			eyeCtx.stroke();
+		}
+		if (linearDecay) {
+			if (i == 0) {
+				radius = radius * initDecay;
+			} else {
+				radius -= 2;
+			}
+		} else {
+			radius = radius * initDecay;
+		}
+	}
+	trackerQueue.reverse();
+	sliceVal = -1 * (initFixations - 1);
+	trackerQueue = trackerQueue.slice(sliceVal);
 }
 
 function resetBorders() {
 	$(".noDataDiv").css("border", "2px solid black");
 	$(".offAOIDiv").css("border", "2px solid black");
+	$(".offAOIDiv").css("height", "73px");
 }

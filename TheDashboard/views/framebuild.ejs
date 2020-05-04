@@ -84,10 +84,48 @@
 	<div class="vidControls">
 		<img src="img/tv.png" id="tv">
 		<img src="img/speaker.png" id="speaker">
+		<img src="img/gear.png" id="settings">
 	</div>
 
 	<div id="vidDiv">
-		<video controls id="vid"> <source src="img/rick.mp4" type="video/mp4"></video>
+		<video id="vid"> <source src="video/overShoulder.mp4" type="video/mp4"></video>
+	</div>
+
+	<div id="settingsDiv">
+		<h1 id="settingsHeader"><u>Settings:</u></h1>
+		<label for="fixationRadius" id="fixationRadiusLabel">Fixation Radius:</label>
+  		<input type="text" id="fixationRadius" name="fixationRadius">
+
+  		<label for="fixationOpacity" id="fixationOpacityLabel">Fixation Opacity:</label>
+  		<input type="text" id="fixationOpacity" name="fixationOpacity">
+
+  		<label for="radialDecay" id="radialDecayLabel">Radial Decay:</label>
+  		<input type="text" id="radialDecay" name="radialDecay">
+
+  		<label for="videoOffset" id="videoOffsetLabel">Video Offset:</label>
+  		<input type="text" id="videoOffset" name="videoOffset">
+
+  		<label for="frameInput" id="frameInputLabel">Frame Count:</label>
+  		<input type="text" id="frameInput" name="frameInput">
+
+  		<label for="numFixations" id="numFixationsLabel">Num. Fixations:</label>
+  		<input type="text" id="numFixations" name="numFixations">
+
+  		<label for="displayControls" id="displayControlsLabel">Video Controls: </label>
+  		<input type="checkbox" id="displayControls" name="displayControls">
+
+  		<label for="fixationCross" id="fixationCrossLabel">Fixation Cross: </label>
+  		<input type="checkbox" id="fixationCross" name="fixationCross">
+
+  		<input id="submitSettings" type="submit" value="Apply">
+
+  		<div id="fixationStyle">
+  			<label for="fill">Fill</label>
+  			<input type="radio" id="fill" name="fixationStyle" value="fill">
+
+  			<label for="stroke">Stroke</label>
+  			<input type="radio" id="stroke" name="fixationStyle" value="stroke">
+  		</div>
 	</div>
 </body>
 </html>
@@ -151,6 +189,22 @@
 	var running = false;
 	var sim_speed = 16.7 * 3;
 	var tvVisible = false;
+	var settingsVisible = false;
+	var displayControls = false;
+
+	initOffset = 0;
+
+	$("#fixationRadius").val(initRadius);
+	$("#fixationOpacity").val(initOpacity);
+	$("#radialDecay").val(initDecay);
+	$('input:radio[name=fixationStyle]')[1].checked = initStyle == "stroke";
+	$("#videoOffset").val(initOffset);
+	document.getElementById("vid").currentTime = initOffset;
+	$("#frameInput").val(0);
+	$("#numFixations").val(initFixations);
+	$('#displayControls').prop('checked', false);
+	$("#vid").attr("controls", displayControls);
+	$('#fixationCross').prop('checked', true);
 
 	$("#play").click(function() {
 		if (running) {
@@ -160,6 +214,7 @@
 			runner = setInterval(runSimulation, sim_speed);
 			console.log("Playing simulation.");
 		}
+		document.getElementById("vid").play();
 	})
 
 	$("#pause").click(function() {
@@ -170,6 +225,7 @@
 			runner = clearInterval(runner);
 			console.log("Paused simulation.");
 		}
+		document.getElementById("vid").pause();
 	})
 
 	$("#stop").click(function() {
@@ -181,8 +237,12 @@
 
 		document.getElementById("slider").value = 3*data_index;
 		document.getElementById("frame").innerHTML = "Frame Count: " + (3*data_index);
+		$("#frameInput").val(3*data_index);
 		document.getElementById("time").innerHTML = "Real Time: " + raw_memory[data_index]["\"utc_datetime\""];
 		trackerQueue = [];
+		document.getElementById("vid").pause();
+		document.getElementById("vid").currentTime = 0;
+		$("#videoOffset").val(0);
 	})
 
 	$("#faster").click(function() {
@@ -204,6 +264,9 @@
 			document.getElementById("vidDiv").style.display = 'block';
 		}
 		tvVisible = !tvVisible
+
+		$("#vid").attr("controls", displayControls);
+		$('#fixationCross').prop('checked', cross);
 	})
 
 	$("#speaker").click(function() {
@@ -215,11 +278,59 @@
 		}
 	})
 
+	$("#settings").click(function() {
+		if (running) {
+			running = false;
+			runner = clearInterval(runner);
+			console.log("Changing settings. Simulation paused.");
+		}
+
+		if (settingsVisible) {
+			document.getElementById("settingsDiv").style.display = 'none';
+		} else {
+			document.getElementById("settingsDiv").style.display = 'block';
+		}
+		settingsVisible = !settingsVisible
+
+		$("#fixationRadius").val(initRadius);
+		$("#fixationOpacity").val(initOpacity);
+		$("#radialDecay").val(initDecay);
+		$('input:radio[name=fixationStyle]')[1].checked = initStyle == "stroke";
+		$("#frameInput").val(3*data_index);
+		$("#numFixations").val(initFixations);
+		$('#fixationCross').prop('checked', cross);
+		document.getElementById("vid").pause();
+	})
+
+	$("#submitSettings").click(function() {
+    	console.log("Applied new settings.");
+    	initRadius = parseInt($("#fixationRadius").val());
+		initOpacity = parseFloat($("#fixationOpacity").val());
+		initDecay = parseFloat($("#radialDecay").val());
+		initFixations = parseInt($("#numFixations").val());
+		displayControls = $('#displayControls').prop('checked');
+		$("#vid").attr("controls", displayControls);
+		if ($('input:radio[name=fixationStyle]')[1].checked) {
+			initStyle = "stroke";
+		} else {
+			initStyle = "fill";
+		}
+		cross = $('#fixationCross').prop('checked');
+		data_index = Math.round(parseInt($("#frameInput").val()) / 3);
+		initOffset = parseInt($("#videoOffset").val());
+		document.getElementById("vid").currentTime = (parseFloat(raw_memory[data_index]["\"utc_time\""]) - parseFloat(raw_memory[0]["\"utc_time\""])) + initOffset;
+		
+		document.getElementById("slider").value = 3*data_index;
+		document.getElementById("frame").innerHTML = "Frame Count: " + (3*data_index);
+		document.getElementById("time").innerHTML = "Real Time: " + raw_memory[data_index]["\"utc_datetime\""];
+    })
+
 	function runSimulation() {
 		data_index = parseInt(data_index) + 1; 
 
 		document.getElementById("slider").value = 3*data_index;
 		document.getElementById("frame").innerHTML = "Frame Count: " + (3*data_index);
+		$("#frameInput").val(3*data_index);
 		document.getElementById("time").innerHTML = "Real Time: " + raw_memory[data_index]["\"utc_datetime\""];
 		if (data_index < (raw_memory.length - 3)) {
 			enterData();
@@ -241,19 +352,12 @@
 		running = false;
 	 	data_index = parseInt(slider.value / 3);
 	 	document.getElementById("frame").innerHTML = "Frame Count: " + (3*data_index);
+	 	$("#frameInput").val(3*data_index);
 	 	document.getElementById("time").innerHTML = "Real Time: " + raw_memory[data_index]["\"utc_datetime\""];
-	}
 
-	function processTime(frame) {
-		if (!raw_memory[frame] || !raw_memory[frame].sec_utc) {
-			return "--:--:--";
-		}
-		var elapsedSeconds = (raw_memory[frame].sec_utc - STARTING_TIME).toFixed(2);
-		var hours = Math.floor(elapsedSeconds / 3600);
-		var minutes = Math.floor(elapsedSeconds / 60) % 60; 
-		var seconds = Math.floor(elapsedSeconds - minutes * 60);
-		var milliseconds = elapsedSeconds.slice(-2);
-		var pad = function(num, size) { return ('000' + num).slice(size * -1); }
-		return pad(hours, 2) + ':' + pad(minutes, 2) + ':' + pad(seconds, 2) + ',' + pad(milliseconds, 2);
-    }
+	 	document.getElementById("vid").currentTime = (parseFloat(raw_memory[data_index]["\"utc_time\""]) - parseFloat(raw_memory[0]["\"utc_time\""])) + initOffset;
+
+	 	document.getElementById("vid").pause();
+	}
+    
 </script>

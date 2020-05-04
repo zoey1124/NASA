@@ -41,7 +41,7 @@ function MiscSim() {
 
 		ctx.font = "14px Arial";
 		var textSize = ctx.measureText("THROTTLE #1").width / 2
-		ctx.fillText("THROTTLE #1", ctxWid/2 - textSize, ctxWid/3.5 + 38);
+		ctx.fillText("THROTTLE #1: "+ this.memory.throttle_1_pos.toFixed(1), ctxWid/2 - textSize - 12, ctxWid/3.5 + 38);
 
 		ctx.beginPath();
 		ctx.arc(ctxWid/2, 180, ctxWid/3.5, 0, Math.PI, true);
@@ -52,7 +52,7 @@ function MiscSim() {
 		ctx.beginPath();
 		ctx.moveTo(ctxWid/2, 175);
 		var r = 80;
-		var theta = this.memory.throttle_2_pos * (Math.PI/180)
+		var theta = this.memory.throttle_2_pos * (Math.PI/180);
 		var rX = (ctxWid/2) - (r*Math.cos(theta));
 		var rY = 175 - (r*Math.sin(theta));
 		ctx.lineTo(rX, rY);
@@ -60,7 +60,7 @@ function MiscSim() {
 
 		ctx.font = "14px Arial";
 		var textSize = ctx.measureText("THROTTLE #2").width / 2
-		ctx.fillText("THROTTLE #2", ctxWid/2 - textSize, 193);
+		ctx.fillText("THROTTLE #2: "+ this.memory.throttle_2_pos.toFixed(1), ctxWid/2 - textSize - 12, 193);
 
 		ctx.lineWidth = 1;
 		ctx.font = "8px Arial";
@@ -75,6 +75,20 @@ function MiscSim() {
 			ctx.lineTo(120, 215 + (i*25));
 			ctx.stroke();
 		}
+
+        ctx.lineWidth = 1;
+
+        ctx.beginPath();
+        ctx.moveTo(120, 265);
+        ctx.lineTo(130, 275);
+        ctx.lineTo(155, 275);
+        ctx.lineTo(155, 255);
+        ctx.lineTo(130, 255);
+        ctx.lineTo(120, 265);
+        ctx.stroke();
+
+        ctx.font = "15px Arial";
+        ctx.fillText(this.memory.spoiler_pos, 128, 270);
 
 		ctx.beginPath();
 		ctx.fillStyle = 'green';

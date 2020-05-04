@@ -28,6 +28,105 @@ function NDSim() {
         ctx.fillStyle = 'white';
         ctx.fillText("GS", 5, 20);
 
+        ctx.lineWidth = 2;
+
+        //Middle Area
+        if (!this.memory.fo_vsd_on) {
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'white';
+            ctx.beginPath();
+            ctx.moveTo(200, 330);
+            ctx.lineTo(215, 380);
+            ctx.lineTo(185, 380);
+            ctx.lineTo(200, 330);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(200, 330);
+            ctx.lineTo(200, 72);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(200, 272, 200, -5*Math.PI/6, -Math.PI/6);
+            ctx.stroke();
+            var coeff = (-1*(this.memory.hdg_angle - 90)/8) % 1;
+            for (i = 0; i < 9; i++) {
+                var angle = Math.PI*(i - 10 + coeff)/12; 
+                var xFactor = 200*Math.cos(angle);
+                var yFactor = 200*Math.sin(angle);
+                ctx.strokeStyle = 'white';
+                if (xFactor <= 175 && xFactor >= -174.5) {
+                    ctx.beginPath();
+                    if (i % 2 == 0) {
+                        ctx.moveTo(200+(0.8*xFactor), 272+(0.8*yFactor));
+                    } else {
+                        ctx.moveTo(200+(0.9*xFactor), 272+(0.9*yFactor));
+                    }
+                    ctx.lineTo(200 + xFactor, 272 + yFactor);
+                    ctx.stroke();
+                }
+            }
+
+            ctx.font = "12px Arial";
+            ctx.fillStyle = 'white';
+            ctx.fillText("LAT", 235, 362);
+            ctx.fillText("LONG", 235, 380);
+
+            ctx.font = "18px Arial";
+            ctx.fillStyle = '#5afc03';
+            ctx.fillText(this.memory.lat, 275, 362);
+            ctx.fillText(this.memory.long, 275, 380);
+
+            ctx.beginPath();
+            ctx.moveTo(342, 380-45+20);
+            ctx.lineTo(360, 380-45+20);
+            ctx.lineTo(360, 345-45);
+            ctx.lineTo(342, 345-45);
+            ctx.lineTo(360, 345-45);
+            ctx.lineTo(360, 310-45-20);
+            ctx.lineTo(342, 310-45-20);
+            ctx.stroke();
+            strokeWideRhombus(ctx, 373, 345-45, 8, "#f4b8ff");
+        } else {
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'white';
+
+            ctx.beginPath();
+            ctx.moveTo(200, 175);
+            ctx.lineTo(215, 225);
+            ctx.lineTo(185, 225);
+            ctx.lineTo(200, 175);
+            ctx.stroke();
+
+            for (i = 0; i < 36; i++) {
+                var shiftFactor = this.memory.hdg_angle * Math.PI/180;
+                var angle = (Math.PI * 10 * i)  / 180;
+                angle += shiftFactor;
+                var xFactor = 140*Math.cos(angle);
+                var yFactor = 140*Math.sin(angle);
+                if (i % 2 == 0) {
+                    ctx.moveTo(200+(0.92*xFactor), 200+(0.92*yFactor));
+                } else {
+                    ctx.moveTo(200+(0.88*xFactor), 200+(0.88*yFactor));
+                }
+                ctx.lineTo(200+xFactor, 200+yFactor);
+                ctx.stroke();
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(342, 380-70+20);
+            ctx.lineTo(360, 380-70+20);
+            ctx.lineTo(360, 345-70);
+            ctx.lineTo(342, 345-70);
+            ctx.lineTo(360, 345-70);
+            ctx.lineTo(360, 310-70-20);
+            ctx.lineTo(342, 310-70-20);
+            ctx.stroke();
+            strokeWideRhombus(ctx, 373, 345-70, 8, "#f4b8ff");
+        }
+
+        //Bottom left
+
         ctx.font = "18px Arial";
         ctx.fillText(this.memory.gnd_spd, 25, 20);
 
@@ -72,64 +171,6 @@ function NDSim() {
         ctx.fillStyle = "#5afc03";
         ctx.fillText(this.memory.mag_hdg_angle, 294, 63);
 
-        ctx.fillStyle = 'white';
-        ctx.strokeStyle = 'white';
-        ctx.beginPath();
-        ctx.moveTo(200, 290);
-        ctx.lineTo(230, 380);
-        ctx.lineTo(170, 380);
-        ctx.lineTo(200, 290);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(200, 290);
-        ctx.lineTo(200, 72);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(200, 272, 200, -5*Math.PI/6, -Math.PI/6);
-        ctx.stroke();
-
-        var coeff = ((this.memory.hdg_angle - 90)/8) % 1;
-        for (i = 0; i < 9; i++) {
-            var angle = Math.PI*(i - 10 + coeff)/12; 
-            var xFactor = 200*Math.cos(angle);
-            var yFactor = 200*Math.sin(angle);
-            ctx.strokeStyle = 'white';
-            ctx.beginPath();
-            if (i % 2 == 0) {
-                ctx.moveTo(200+(0.8*xFactor), 272+(0.8*yFactor));
-            } else {
-                ctx.moveTo(200+(0.9*xFactor), 272+(0.9*yFactor));
-            }
-            if (xFactor <= 175 && xFactor >= -220) {
-                ctx.lineTo(200 + xFactor, 272 + yFactor);
-                ctx.stroke();
-            }
-        }
-        
-        ctx.beginPath();
-        ctx.moveTo(342, 380);
-        ctx.lineTo(360, 380);
-        ctx.lineTo(360, 345);
-        ctx.lineTo(342, 345);
-        ctx.lineTo(360, 345);
-        ctx.lineTo(360, 310);
-        ctx.lineTo(342, 310);
-        ctx.stroke();
-
-        strokeWideRhombus(ctx, 373, 345, 8, "#f4b8ff");
-
-        ctx.font = "12px Arial";
-        ctx.fillStyle = 'white';
-        ctx.fillText("LAT", 235, 362);
-        ctx.fillText("LONG", 235, 380);
-
-        ctx.font = "18px Arial";
-        ctx.fillStyle = '#5afc03';
-        ctx.fillText(this.memory.lat, 275, 362);
-        ctx.fillText(this.memory.long, 275, 380);
-
         var string = "";
         if (this.memory.fo_ef_nd_mode == 1) {
             string = "APP";
@@ -147,18 +188,18 @@ function NDSim() {
         if (this.memory.fo_bel_gs_lt != 0) {
             ctx.beginPath();
             ctx.fillStyle = "#5afc03";
-            ctx.arc(288, 298, 3, 0, 2*Math.PI);
+            ctx.arc(325, 377, 3, 0, 2*Math.PI);
             ctx.fill();
 
             ctx.font = "12px Arial";
-            ctx.fillText("BELOW G/S", 294, 303);
+            ctx.fillText("BELOW G/S", 330, 380);
         }
 
         if (this.memory.fo_vsd_on) {
-            var coverX = (ctxWid/5) - 5;
-            var coverY = (ctxHei/1.75) - 25;
-            var coverWid = (ctxWid*3/5) + 10;
-            var coverHei = ctxHei - coverY - 15;
+            var coverX = 80;
+            var coverY = 245;
+            var coverWid = 240;
+            var coverHei = 145;
             ctx.strokeStyle = 'white'; 
             ctx.lineWidth = 5;
             ctx.strokeRect(coverX, coverY, coverWid, coverHei);

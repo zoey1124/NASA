@@ -35,7 +35,22 @@ app.post('/upload', function(req, res) {
 		}
 		console.log("Parsing file.");
 		csvHandler();
-		res.redirect("/");
+		res.redirect("/initialize");
+	})
+});
+
+app.post('/vid-upload', function(req, res) {
+	if (!req.files || Object.keys(req.files).length === 0) {
+		return res.status(400).send('No files were uploaded.');
+	}
+
+	let sampleFile = req.files.sampleFile;
+	sampleFile.mv("data/overShoulder.mp4", function(err) {
+		if (err) {
+			return res.status(500).send(err);
+		}
+		console.log("Uploading video file.");
+		res.redirect("/initialize");
 	})
 });
 

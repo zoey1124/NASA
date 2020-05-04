@@ -15,6 +15,8 @@ body {
 	width: 806px;
 	height: 81px;
 	border: 2px solid black;
+	background-color: white;
+	opacity: 1;
 	
 	line-height: 150px;
 	font-size: 20px;
@@ -190,7 +192,7 @@ body {
 	font-size: 20px;
 
 	position: absolute;
-	left: 1141px;
+	left: 1186px;
 	top: 161px;
 }
 
@@ -260,7 +262,7 @@ body {
 }
 
 .mcpDiv {
-	width: 962px;
+	width: 1010px;
 	height: 152px;
 	
 	line-height: 150px;
@@ -271,7 +273,7 @@ body {
 	top: 161px;
 
 	background-image: url('img/mcp_back.png');
-	background-size: 962px 152px;
+	background-size: 1010px 152px;
 	margin: auto;
 }
 
@@ -292,7 +294,7 @@ body {
 	height: 30px;
 	background-size: 112px 30px;
 	position: absolute;
-	left: 771px;
+	left: 815px;
 	top: 113px;
 }
 
@@ -301,24 +303,24 @@ body {
 }
 
 #mcp_ias_mach_ds {
-	left: 110px; 
+	left: 118px; 
 	top: -44px;
 }
 
 #mcp_hdg_ds
 {
-	left: 266px; 
+	left: 285px; 
 	top: -43px;
 }
 
 #mcp_alt_ds {
-	left: 466px; 
+	left: 495px; 
 	top: -42px;
 }
 
 #mcp_vert_spd_ds
 {
-	left: 634px; 
+	left: 667px; 
 	top: -42px;
 }
 
@@ -344,26 +346,26 @@ body {
 }
 
 #mcp_at_arm {
-	left: 14px;
+	left: 16px;
 	top: 9px;
 }
 
 #mcp_spd_intv {
-	left: 212px;
+	left: 223px;
 	top: 27px;
 }
 
 #mcp_alt_intv {
-	left: 557px;
+	left: 586px;
 	top: 28px;
 }
 #mcp_fd_1 {
-	left: 23px;
+	left: 25px;
 	top: 95px;
 }
 
 #mcp_fd_2 {
-	left: 917px;
+	left: 963px;
 	top: 93px;
 }
 
@@ -376,17 +378,17 @@ body {
 }
 
 #ias_mach_knob {
-	left: 156px;
+	left: 165px;
 	top: 68px;
 }
 
 #heading_knob {
-	left: 322px;
+	left: 339px;
 	top: 65px;
 }
 
 #altitude_knob {
-	left: 500px;
+	left: 526px;
 	top: 66px;
 }
 
@@ -405,7 +407,7 @@ body {
 
 #vs_wheel
 {
-	left: 673px;
+	left: 707px;
 	top: 64px;
 }
 
@@ -418,76 +420,88 @@ body {
 }
 
 .button.on {
-	background-image: url('img/button-on.png');
+	background-image: url('img/button-on-yellow.png');
+	animation-duration: 1.2s;
+	animation-name: bounceIn;
+	animation-iteration-count: infinite;
+}
+
+@keyframes bounceIn {
+  50% {
+    background-image: url('img/button-on-yellow.png');
+  }
+  100% {
+    background-image: url('img/button-off.png');
+  }
 }
 
 #mcp_n1 {
-	left: 77px;
+	left: 82px;
 	top: 123px;
 }
 
 #mcp_spd {
-	left: 134px; 
+	left: 142px; 
 	top: 123px;
 }
 
 #mcp_lvl_spd {
-	left: 244px; 
+	left: 257px; 
 	top: 123px;
 }
 
 #mcp_vnav {
-	left: 244px; 
+	left: 258px; 
 	top: 15px;
 }
 
 #mcp_hdg_sel {
-	left: 319px; 
+	left: 335px; 
 	top: 123px;
 }
 
 #mcp_lnav {
-	left: 401px; 
+	left: 421px; 
 	top: 17px;
 }
 
 #mcp_vor_loc {
-	left: 400px; 
+	left: 421px; 
 	top: 63px;
 }
 
 #mcp_apprh {
-	left: 400px; 
+	left: 421px; 
 	top: 123px;
 }
 
 #mcp_alt_hld {
-	left: 495px; 
+	left: 521px; 
 	top: 123px;
 }
 
 #mcp_vert_spd {
-	left: 587px; 
+	left: 618px; 
 	top: 123px;
 }
 
 #mcp_cmd_a {
-	left: 754px; 
+	left: 793px; 
 	top: 32px;
 }
 
 #mcp_cmd_b {
-	left: 858px; 
+	left: 901px; 
 	top: 31px;
 }
 
 #mcp_cws_a {
-	left: 754px; 
+	left: 793px; 
 	top: 71px;
 }
 
 #mcp_cws_b {
-	left: 858px; 
+	left: 901px; 
 	top: 71px;
 }
 
@@ -513,9 +527,18 @@ body {
 	top: 776px;
 }
 
+#settings {
+	width: 40px;
+	height: 40px;
+
+	position: absolute;
+	left: 104px;
+	top: 776px;
+}
+
 #vidDiv {
-	width: 500px;
-	height: 281px;
+	width: 406px;
+	height: 305px;
 
 	line-height: 281px;
 	font-size: 20px;
@@ -525,12 +548,167 @@ body {
 
 	position: absolute;
 	left: 5px;
-	top: 475px;
+	top: 462px;
 	opacity: 1;
 
 	display: none;
 }
 
 video {
-	width: 500px;
+	width: 406px;
+}
+
+#settingsDiv {
+	width: 400px;
+	height: 350px;
+
+	line-height: 350px;
+	font-size: 20px;
+
+	border: 2px solid black;
+	background-color: white;
+
+	position: absolute;
+	left: 520px;
+	top: 237px;
+	opacity: 1;
+
+	display: none;
+}
+
+#settingsHeader {
+	font-size: 36px;
+
+	position: absolute;
+	left: 130px;
+	top: -172px;
+}
+
+label {
+	font-size: 16px;
+}
+
+#fixationRadiusLabel {
+	position: absolute;
+	left: 30px;
+	top: -100px;
+}
+
+#fixationRadius {
+	width: 34px;
+
+	position: absolute;
+	left: 145px;
+	top: 63px;
+	font-size: 16px;
+}
+
+#displayControlsLabel {
+	position: absolute;
+	left: 220px;
+	top: -100px;
+}
+
+#displayControls {
+	position: absolute;
+	left: 330px;
+	top: 65px;
+}
+
+#fixationCrossLabel {
+	position: absolute;
+	left: 220px;
+	top: -70px;
+}
+
+#fixationCross {
+	position: absolute;
+	left: 330px;
+	top: 95px;
+}
+
+#fixationOpacityLabel {
+	position: absolute;
+	left: 30px;
+	top: -65px;
+}
+
+#fixationOpacity {
+	width: 34px;
+
+	position: absolute;
+	left: 145px;
+	top: 98px;
+	font-size: 16px;
+}
+
+#radialDecayLabel {
+	position: absolute;
+	left: 30px;
+	top: -30px;
+}
+
+#radialDecay {
+	width: 34px;
+
+	position: absolute;
+	left: 145px;
+	top: 133px;
+	font-size: 16px;
+}
+
+#numFixationsLabel {
+	position: absolute;
+	left: 30px;
+	top: 0px;
+}
+
+#numFixations {
+	width: 34px;
+
+	position: absolute;
+	left: 145px;
+	top: 168px;
+	font-size: 16px;
+}
+
+#fixationStyle {
+	position: absolute;
+	left: 30px;
+	top: 35px;
+}
+
+#videoOffsetLabel {
+	position: absolute;
+	left: 30px;
+	top: 70px;
+}
+
+#videoOffset {
+	width: 80px;
+	position: absolute;
+	left: 145px;
+	top: 233px;
+	font-size: 16px;
+}
+
+#frameInputLabel {
+	position: absolute;
+	left: 30px;
+	top: 105px;
+}
+
+#frameInput {
+	width: 80px;
+
+	position: absolute;
+	left: 145px;
+	top: 268px;
+	font-size: 16px;
+}
+
+#submitSettings {
+	position: absolute;
+	left: 145px;
+	top: 308px;
 }
