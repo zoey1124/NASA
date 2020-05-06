@@ -105,8 +105,8 @@
   		<label for="videoOffset" id="videoOffsetLabel">Video Offset:</label>
   		<input type="text" id="videoOffset" name="videoOffset">
 
-  		<label for="frameInput" id="frameInputLabel">Frame Count:</label>
-  		<input type="text" id="frameInput" name="frameInput">
+  		<label for="simOffset" id="simOffsetLabel">Sim. Input:</label>
+  		<input type="text" id="simOffset" name="simOffsetInput">
 
   		<label for="numFixations" id="numFixationsLabel">Num. Fixations:</label>
   		<input type="text" id="numFixations" name="numFixations">
@@ -156,6 +156,7 @@
 <!-- Initialize Simulation -->
 <script src="js/init/widget_initialization.js"></script>
 <script type="text/javascript">
+	//Data Index will iterate through the JSON input file.
 	var data_index = 0;
 	var raw_string = <%-(data)%>;
 	var raw_memory = raw_string;
@@ -187,7 +188,9 @@
 <script type="text/javascript">
 	var runner;
 	var running = false;
+	//Note that we are running at 20 hertz.
 	var sim_speed = 16.7 * 3;
+
 	var tvVisible = false;
 	var settingsVisible = false;
 	var displayControls = false;
@@ -200,7 +203,7 @@
 	$('input:radio[name=fixationStyle]')[1].checked = initStyle == "stroke";
 	$("#videoOffset").val(initOffset);
 	document.getElementById("vid").currentTime = initOffset;
-	$("#frameInput").val(0);
+	$("#simOffset").val(0);
 	$("#numFixations").val(initFixations);
 	$('#displayControls').prop('checked', false);
 	$("#vid").attr("controls", displayControls);
@@ -237,7 +240,7 @@
 
 		document.getElementById("slider").value = 3*data_index;
 		document.getElementById("frame").innerHTML = "Frame Count: " + (3*data_index);
-		$("#frameInput").val(3*data_index);
+		$("#simOffset").val(3*data_index);
 		document.getElementById("time").innerHTML = "Real Time: " + raw_memory[data_index]["\"utc_datetime\""];
 		trackerQueue = [];
 		document.getElementById("vid").pause();
@@ -296,7 +299,7 @@
 		$("#fixationOpacity").val(initOpacity);
 		$("#radialDecay").val(initDecay);
 		$('input:radio[name=fixationStyle]')[1].checked = initStyle == "stroke";
-		$("#frameInput").val(3*data_index);
+		$("#simOffset").val((parseFloat(raw_memory[data_index]["\"utc_time\""]) - parseFloat(raw_memory[0]["\"utc_time\""])));
 		$("#numFixations").val(initFixations);
 		$('#fixationCross').prop('checked', cross);
 		document.getElementById("vid").pause();
@@ -316,7 +319,8 @@
 			initStyle = "fill";
 		}
 		cross = $('#fixationCross').prop('checked');
-		data_index = Math.round(parseInt($("#frameInput").val()) / 3);
+		data_index = Math.round($("#simOffset").val() / (0.0167 * 3));
+		console.log("Frame Count Changed: " + data_index);
 		initOffset = parseInt($("#videoOffset").val());
 		document.getElementById("vid").currentTime = (parseFloat(raw_memory[data_index]["\"utc_time\""]) - parseFloat(raw_memory[0]["\"utc_time\""])) + initOffset;
 		
@@ -330,7 +334,7 @@
 
 		document.getElementById("slider").value = 3*data_index;
 		document.getElementById("frame").innerHTML = "Frame Count: " + (3*data_index);
-		$("#frameInput").val(3*data_index);
+		$("#simOffset").val((parseFloat(raw_memory[data_index]["\"utc_time\""]) - parseFloat(raw_memory[0]["\"utc_time\""])));
 		document.getElementById("time").innerHTML = "Real Time: " + raw_memory[data_index]["\"utc_datetime\""];
 		if (data_index < (raw_memory.length - 3)) {
 			enterData();
@@ -352,7 +356,7 @@
 		running = false;
 	 	data_index = parseInt(slider.value / 3);
 	 	document.getElementById("frame").innerHTML = "Frame Count: " + (3*data_index);
-	 	$("#frameInput").val(3*data_index);
+	 	$("#simOffset").val((parseFloat(raw_memory[data_index]["\"utc_time\""]) - parseFloat(raw_memory[0]["\"utc_time\""])));
 	 	document.getElementById("time").innerHTML = "Real Time: " + raw_memory[data_index]["\"utc_datetime\""];
 
 	 	document.getElementById("vid").currentTime = (parseFloat(raw_memory[data_index]["\"utc_time\""]) - parseFloat(raw_memory[0]["\"utc_time\""])) + initOffset;

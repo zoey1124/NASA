@@ -692,13 +692,13 @@ label {
 	font-size: 16px;
 }
 
-#frameInputLabel {
+#simOffsetLabel {
 	position: absolute;
 	left: 30px;
 	top: 105px;
 }
 
-#frameInput {
+#simOffset {
 	width: 80px;
 
 	position: absolute;
